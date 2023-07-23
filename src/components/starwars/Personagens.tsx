@@ -1,54 +1,37 @@
-import useProcessando from "@/data/hooks/useProcessando";
-import { useState } from "react";
+import useStarWars from "@/data/hooks/useStarWars";
+import { IconCheck } from "@tabler/icons-react";
 
-export default function Personagens() {
+interface PersonagensProps {
+  personagens:any[]
+  selecionar:(personagem: any) => void
+}
 
-    const {processando, iniciarProcessamento, finalizarProcessamento} = useProcessando()
-    const [personagens, setPersonagens] = useState<any>([])
-
-    async function simularChamadaAPI() {
-        const resp = await fetch('https://swapi.dev/api/people/')
-        const data = await resp.json()
-        setPersonagens(data.results)
-        //console.log(data.results)
-        // return new Promise((resolve) => {
-        // setTimeout(() => {
-        //     resolve(1);
-        // }, 6000);
-        // });
-    }
-
-    async function obterPersonagens() {
-        try {
-            iniciarProcessamento()
-            await simularChamadaAPI();
-        } finally {
-            finalizarProcessamento()
-        }
-    }
-
-    function renderizarPersonagens() {
-        return (
-            <ul>
-                {personagens.map((p: any) => (
-                    <li key={p.name}>{p.name}</li>
-                ))}
-            </ul>
-        )
-    }
+export default function Personagens(props: PersonagensProps) {
 
     return (
-      <div className="flex flex-col justify-center items-center gap-5 ">
-        <button onClick={obterPersonagens} className="bg-blue-500 p-2 rounded-md">
-          Obter
-        </button>
-        {processando ? (
-          <div>Processando...</div>
-        ) : personagens.length > 0 ? (
-          renderizarPersonagens()
-        ) : (
-          <div>Nenhum personagem encontrado</div>
-        )}
-      </div>
+      <table className="w-3/5 text-xl opacity-70 rounded-lg overflow-hidden">
+        <thead>
+          <tr className="bg-zinc-900">
+            <th className="p-2 font-black">Nome</th>
+            <th className="p-2 font-black">Altura</th>
+            <th className="p-2 font-black">Peso</th>
+            <th className="p-2 font-black">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.personagens.map((p: any) => (
+            <tr key={p.name} className=" odd:bg-zinc-800 even:bg-zinc-700 text-center">
+              <td className="p-2">{p.name}</td>
+              <td className="p-2">{p.height}</td>
+              <td className="p-2">{p.mass}</td>
+              <td className="p-2">
+                <button className="botao">
+                    <IconCheck size={20} onClick={() => props.selecionar(p)}/>
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     );
 }
