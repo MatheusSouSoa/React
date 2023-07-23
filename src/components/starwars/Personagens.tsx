@@ -38,16 +38,17 @@ export default function Personagens() {
     }
 
     return (
-        <div>
-            {processando ? (
-                <div>Processando...</div>
-            ) : personagens.length > 0 ? (
-                renderizarPersonagens()
-            ) : (
-                <div>Nenhum personagem encontrado</div>
-            )}
-
-            <button onClick={obterPersonagens} className="bg-blue-500 p-2">Obter</button>
-        </div>
-    )
+      <div className="flex flex-col justify-center items-center gap-5 ">
+        <button onClick={obterPersonagens} className="bg-blue-500 p-2 rounded-md">
+          Obter
+        </button>
+        {processando ? (
+          <div>Processando...</div>
+        ) : personagens.length > 0 ? (
+          renderizarPersonagens()
+        ) : (
+          <div>Nenhum personagem encontrado</div>
+        )}
+      </div>
+    );
 }
